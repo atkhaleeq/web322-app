@@ -64,9 +64,3 @@ const getCategories = () => {
     });
 };
 
-module.exports = {
-    initialize,
-    getAllItems,
-    getPublishedItems,
-    getCategories
-};
