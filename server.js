@@ -15,9 +15,23 @@ const express = require('express');
 const path = require('path');
 const store = require('./store-service');
 const app = express();
+const multer = require("multer");
+const cloudinary = require('cloudinary').v2
+const streamifier = require('streamifier')
+const multer = require("multer");
+const cloudinary = require('cloudinary').v2
+const streamifier = require('streamifier')
+
 const PORT = process.env.PORT || 8080;
 
+cloudinary.config({
+    cloud_name: 'dnt5znj9m',
+    api_key: '372148929547974',
+    api_secret: '0rK-uaooCe_7hHS43Y_k2j3yaR0',
+    secure: true
+});
 
+const upload = multer(); 
 app.use(express.static(__dirname + '/public'));
 
 
