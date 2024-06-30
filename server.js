@@ -31,7 +31,10 @@ cloudinary.config({
     secure: true
 });
 
-const upload = multer(); 
+//const upload = multer(); 
+
+
+
 app.use(express.static(__dirname + '/public'));
 
 
