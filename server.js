@@ -52,9 +52,16 @@ store.initialize()
                 .catch(err => res.status(404).json({ message: err }));
         });
 
+        app.get('/items/add', (req, res) => {
+            res.sendFile(path.join(__dirname, 'views', 'addItem.html'));
+        });
+
         app.get('*', (req, res) => {
             res.status(404).send('404 Error :(');
         });
+
+
+
 
         // Starting the server
         app.listen(PORT, () => {
