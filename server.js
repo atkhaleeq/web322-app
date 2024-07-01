@@ -15,24 +15,63 @@ const express = require('express');
 const path = require('path');
 const store = require('./store-service');
 const app = express();
-//const multer = require("multer");
-///const cloudinary = require('cloudinary').v2
-//const streamifier = require('streamifier')
-//const multer = require("multer");
-//const cloudinary = require('cloudinary').v2
-//const streamifier = require('streamifier')
+const multer = require("multer");
+const cloudinary = require('cloudinary').v2
+const streamifier = require('streamifier')
+const multer = require("multer");
+const cloudinary = require('cloudinary').v2
+const streamifier = require('streamifier')
 
 const PORT = process.env.PORT || 8080;
 
-//cloudinary.config({
-    //cloud_name: 'dnt5znj9m',
-   // api_key: '372148929547974',
-  //  api_secret: '0rK-uaooCe_7hHS43Y_k2j3yaR0',
-  //  secure: true
-//});
+cloudinary.config({
+    cloud_name: 'dnt5znj9m',
+    api_key: '372148929547974',
+    api_secret: '0rK-uaooCe_7hHS43Y_k2j3yaR0',
+    secure: true
+});
 
-//const upload = multer(); 
+const upload = multer(); 
 
+app.post('/items/add', fileUpload.single('image'), function (req, res, next) {
+    if(req.file){
+        let streamUpload = (req) => {
+            return new Promise((resolve, reject) => {
+                let stream = cloudinary.uploader.upload_stream(
+                    (error, result) => {
+                        if (result) {
+                            resolve(result);
+                        } else {
+                            reject(error);
+                        }
+                    }
+                );
+    
+                streamifier.createReadStream(req.file.buffer).pipe(stream);
+            });
+        };
+    
+        async function upload(req) {
+            let result = await streamUpload(req);
+            console.log(result);
+            return result;
+        }
+    
+        upload(req).then((uploaded)=>{
+            processItem(uploaded.url);
+        });
+    }else{
+        processItem("");
+    }
+     
+    function processItem(imageUrl){
+        req.body.featureImage = imageUrl;
+        store.addItem(req.body)
+            .then(() => {('/items');
+    });
+    
+    } 
+});
 
 
 app.use(express.static(__dirname + '/public'));

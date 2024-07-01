@@ -64,9 +64,29 @@ const getCategories = () => {
     });
 };
 
+const addItem = (itemData) => {
+    return new promise((resolve) => {
+        if (itemData.published!==undefined) {
+            itemData.published = true;
+        }
+        else{
+            itemData.published = false;
+        }
+        if(items.length > 0){
+            itemsData.id = items.length+1;
+        }
+        else{
+            itemData.id = 1;
+        }
+        items.push(itemData);
+        resolve(itemData);
+    });
+};
+
 module.exports = {
     initialize,
     getAllItems,
     getPublishedItems,
-    getCategories
+    getCategories,
+    addItem
 };
