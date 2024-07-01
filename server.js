@@ -18,9 +18,6 @@ const app = express();
 const multer = require("multer");
 const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
-const multer = require("multer");
-const cloudinary = require('cloudinary').v2
-const streamifier = require('streamifier')
 
 const PORT = process.env.PORT || 8080;
 
@@ -33,7 +30,7 @@ cloudinary.config({
 
 const upload = multer(); 
 
-app.post('/items/add', fileUpload.single('image'), function (req, res, next) {
+app.post('/items/add', upload.single('image'), function (req, res, next) {
     if(req.file){
         let streamUpload = (req) => {
             return new Promise((resolve, reject) => {
