@@ -65,7 +65,7 @@ const getCategories = () => {
 };
 
 const addItem = (itemData) => {
-    return new promise((resolve) => {
+    return new Promise((resolve) => {
         if (itemData.published!==undefined) {
             itemData.published = true;
         }
@@ -73,7 +73,7 @@ const addItem = (itemData) => {
             itemData.published = false;
         }
         if(items.length > 0){
-            itemsData.id = items.length+1;
+            itemData.id = items.length+1;
         }
         else{
             itemData.id = 1;
