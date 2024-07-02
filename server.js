@@ -30,7 +30,7 @@ cloudinary.config({
 
 const upload = multer(); 
 
-app.post('/items/add', upload.single('image'), function (req, res, next) {
+app.post('/items/add', upload.single('featureImage'), function (req, res, next) {
     if(req.file){
         let streamUpload = (req) => {
             return new Promise((resolve, reject) => {
@@ -64,7 +64,8 @@ app.post('/items/add', upload.single('image'), function (req, res, next) {
     function processItem(imageUrl){
         req.body.featureImage = imageUrl;
         store.addItem(req.body)
-            .then(() => {('/items');
+            .then(() => {
+                res.redirect('/items');
     });
     
     } 
