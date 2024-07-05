@@ -95,9 +95,23 @@ store.initialize()
         });
 
         app.get('/items', (req, res) => {
-            store.getAllItems()
+            let category = req.query.category;
+            let minDate = req.query.minDate;
+            if(category){
+                store.getItemsByCategory(category)
                 .then(items => res.json(items))
                 .catch(err => res.status(404).json({ message: err }));
+            }
+            else if (minDate){
+                store.getItemsByMinDate(minDate)
+                .then(items => res.json(items))
+                .catch(err => res.status(404).json({ message: err }));
+            }
+            else{
+                store.getAllItems()
+                .then(items => res.json(items))
+                .catch(err => res.status(404).json({ message: err }));
+            }
         });
 
         app.get('/categories', (req, res) => {
