@@ -124,12 +124,18 @@ store.initialize()
             res.sendFile(path.join(__dirname, 'views', 'addItem.html'));
         });
 
+    
+
+        app.get('/items/:id',(req,res)=>{
+            let id = req.params.id;
+            store.getItemById(id)
+            .then(items => res.json(items))
+            .catch(err => res.status(404).json({ message: err }));
+        })
+
         app.get('*', (req, res) => {
             res.status(404).send('404 Error :(');
         });
-
-
-
 
         // Starting the server
         app.listen(PORT, () => {
