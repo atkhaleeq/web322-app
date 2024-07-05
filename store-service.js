@@ -83,10 +83,61 @@ const addItem = (itemData) => {
     });
 };
 
+
+function getItemsByCategory(category) {
+    return new Promise ((resolve, reject)=>{
+         // using built-in function filter and saving the result in arr. we can alternatively use a for loop.
+        let arr = items.filter(itemsCat => itemsCat.category === category);
+        if (arr.length === 0){
+            reject("no results returned");
+        }
+        else{
+            resolve(arr);
+        }
+
+    });
+};
+
+function getItemsByMinDate(minDateStr){
+    return new Promise ((resolve, reject)=>{
+        let arr2 = [];
+        let i = 0;
+        // going through each element of the items and comparing the date. we can alternatively use filter.
+        for(; i< items.length; i++){
+            if (new Date(items[i].postDate) >= new Date(minDateStr)){
+                arr2.push(items[i]);
+            }
+        }
+        if (arr2.length === 0){
+            reject("no results returned");
+        }
+        else{
+            resolve(arr2);
+        }
+    });
+};
+
+function getItemById(id){
+    return new Promise((resolve, reject)=>{
+        let arr3 = items.filter(obj => obj.id === id);
+        if (arr2.length === 0){
+            reject("no results returned");
+        }
+        else{
+            resolve(arr2);
+        }
+    });  
+};
+
+
 module.exports = {
     initialize,
     getAllItems,
     getPublishedItems,
     getCategories,
-    addItem
+    addItem,
+    getItemsByCategory,
+    getItemsByMinDate,
+    getItemById
+
 };
