@@ -37,6 +37,29 @@ app.set("view engine", ".hbs");
 
 const upload = multer(); 
 
+app.use(function(req,res,next){
+    let route = req.path.substring(1);
+    app.locals.activeRoute = "/" + (isNaN(route.split('/')[1]) ? route.replace(/\/(?!.*)/, "") : route.replace(/\/(.*)/, ""));
+    app.locals.viewingCategory = req.query.category;
+    next();
+});
+
+
+app.engine('.hbs', exphbs.engine({extname: '.hbs',
+    helpers: {
+        navLink: function (url, options) {
+            return (
+                '<li class="nav-item"><a ' +
+                (url == app.locals.activeRoute ? ' class="nav-link active"' : ' class="nav-link"') +
+                ' href="' + url + '">' + options.fn(this) + '</a></li>'
+            );
+        }
+    }
+}));
+
+
+
+
 
 app.post('/items/add', upload.single('featureImage'), function (req, res, next) {
     if(req.file){
