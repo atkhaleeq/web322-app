@@ -87,7 +87,7 @@ store.initialize()
 
         // Different Routes
         app.get('/', (req, res) => {
-            res.redirect('/about');
+            res.render('/about');
         });
 
         app.get('/about', (req, res) => {
