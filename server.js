@@ -126,7 +126,7 @@ store.initialize()
 
     
 
-        app.get('/items/value',(req,res)=>{
+        app.get('/items/:id',(req,res)=>{
             let id = req.params.id;
             store.getItemById(id)
             .then(items => res.json(items))
