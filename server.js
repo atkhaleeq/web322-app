@@ -29,8 +29,9 @@ cloudinary.config({
     secure: true
 });
 
+
+app.engine(".hbs", exphbs({extname: ".hbs"}));
 app.set("view engine", ".hbs");
-app.engine(".hbs", exphbs.engine({extname: ".hbs"}));
 
 const upload = multer(); 
 
