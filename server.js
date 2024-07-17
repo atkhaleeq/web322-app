@@ -18,6 +18,7 @@ const app = express();
 const multer = require("multer");
 const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
+const exphbs = require('express-handlebars');
 
 const PORT = process.env.PORT || 8080;
 
@@ -28,7 +29,11 @@ cloudinary.config({
     secure: true
 });
 
+app.set("view engine", ".hbs");
+app.engine(".hbs", exphbs.engine({extname: ".hbs"}));
+
 const upload = multer(); 
+
 
 app.post('/items/add', upload.single('featureImage'), function (req, res, next) {
     if(req.file){
@@ -85,7 +90,7 @@ store.initialize()
         });
 
         app.get('/about', (req, res) => {
-            res.sendFile(path.join(__dirname, 'views', 'about.html'));
+            res.render('about');
         });
 
         app.get('/shop', (req, res) => {
