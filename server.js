@@ -86,11 +86,11 @@ store.initialize()
         console.log('initialization was successful');
 
         // Different Routes
-        app.get('/', (req, res) => {
-            res.render('/about');
-        });
+    
 
-   
+        app.get('/about', (req, res) => {
+            res.render('about');
+        });
 
         app.get('/shop', (req, res) => {
             store.getPublishedItems()
