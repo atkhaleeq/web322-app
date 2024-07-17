@@ -90,9 +90,7 @@ store.initialize()
             res.render('/about');
         });
 
-        app.get('/about', (req, res) => {
-            res.render('about');
-        });
+   
 
         app.get('/shop', (req, res) => {
             store.getPublishedItems()
