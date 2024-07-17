@@ -33,6 +33,8 @@ cloudinary.config({
 app.engine(".hbs", exphbs.engine({extname: ".hbs"}));
 app.set("view engine", ".hbs");
 
+
+
 const upload = multer(); 
 
 
@@ -79,7 +81,7 @@ app.post('/items/add', upload.single('featureImage'), function (req, res, next) 
 
 
 app.use(express.static(__dirname + '/public'));
-
+app.set('views', path.join(__dirname, 'views'));
 
 store.initialize()
     .then(() => {
