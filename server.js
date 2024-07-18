@@ -132,25 +132,25 @@ store.initialize()
             let minDate = req.query.minDate;
             if(category){
                 store.getItemsByCategory(category)
-                .then(items => res.json(items))
-                .catch(err => res.status(404).json({ message: err }));
+                .then(items => res.render('items', {items: items}))
+                .catch(err => res.render('items', { message: err }));
             }
             else if (minDate){
                 store.getItemsByMinDate(minDate)
-                .then(items => res.json(items))
-                .catch(err => res.status(404).json({ message: err }));
+                .then(items => res.render('items', {items: items}))
+                .catch(err => res.render('items', { message: err }));
             }
             else{
                 store.getAllItems()
-                .then(items => res.json(items))
-                .catch(err => res.status(404).json({ message: err }));
+                .then(items => res.render('items', {items: items}))
+                .catch(err => res.render('items', { message: err }));
             }
         });
 
         app.get('/categories', (req, res) => {
             store.getCategories()
-                .then(categories => res.json(categories))
-                .catch(err => res.status(404).json({ message: err }));
+                .then(categories =>  res.render('categories', {categories: categories}))
+                .catch(err => res.render('categories', { message: err }));
         });
 
         app.get('/items/add', (req, res) => {

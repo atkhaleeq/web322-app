@@ -54,6 +54,19 @@ const getPublishedItems = () => {
 };
 
 
+const getPublishedItemsByCategory = (category) => {
+    return new Promise((resolve, reject) => {
+        const publishedItemsCat = items.filter(item => item.published=== true && item.category === category);
+        if (publishedItemsCat.length === 0) {
+            reject(`Rejected, items length is zero`);
+        } else {
+            resolve(publishedItemsCat);
+        }
+    });
+};
+
+
+
 const getCategories = () => {
     return new Promise((resolve, reject) => {
         if (categories.length === 0) {
@@ -138,6 +151,7 @@ module.exports = {
     addItem,
     getItemsByCategory,
     getItemsByMinDate,
-    getItemById
+    getItemById,
+    getPublishedItemsByCategory
 
 };
