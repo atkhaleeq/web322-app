@@ -91,6 +91,15 @@ const addItem = (itemData) => {
         else{
             itemData.id = 1;
         }
+        
+        let currentdate = new Date();
+        let year = currentdate.getFullYear();
+        let month = currentdate.getMonth();
+        let day = currentdate.getDay();
+        const NewDate = `${year}-${month}-${dat}`;
+        itemData.itemDate = NewDate;
+
+
         items.push(itemData);
         resolve(itemData);
     });

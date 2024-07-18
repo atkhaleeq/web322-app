@@ -114,7 +114,7 @@ store.initialize()
     
 
         app.get('/', (req, res) => {
-            res.render('about');
+            res.redirect('/shop');
         });
 
         app.get('/about', (req, res) => {
