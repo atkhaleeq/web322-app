@@ -149,7 +149,7 @@ app.get("/shop", async (req, res) => {
       viewData.items = items;
       viewData.item = item;
     } catch (err) {
-      viewData.message = "no results";
+      viewData.message = "no results1";
     }
   
     try {
@@ -159,7 +159,7 @@ app.get("/shop", async (req, res) => {
       // store the "categories" data in the viewData object (to be passed to the view)
       viewData.categories = categories;
     } catch (err) {
-      viewData.categoriesMessage = "no results";
+      viewData.categoriesMessage = "no results1";
     }
   
     // render the "shop" view with all of the data (viewData)
@@ -193,14 +193,14 @@ app.get('/shop/:id', async (req, res) => {
         viewData.items = items;
   
     }catch(err){
-        viewData.message = "no results";
+        viewData.message = "no results2";
     }
   
     try{
         // Obtain the item by "id"
         viewData.item = await itemData.getItemById(req.params.id);
     }catch(err){
-        viewData.message = "no results"; 
+        viewData.message = "no results2"; 
     }
   
     try{
@@ -210,61 +210,62 @@ app.get('/shop/:id', async (req, res) => {
         // store the "categories" data in the viewData object (to be passed to the view)
         viewData.categories = categories;
     }catch(err){
-        viewData.categoriesMessage = "no results"
+        viewData.categoriesMessage = "no results2"
     }
   
     // render the "shop" view with all of the data (viewData)
     res.render("shop", {data: viewData})
   });
 
-        app.get('/items', (req, res) => {
-            let category = req.query.category;
-            let minDate = req.query.minDate;
-            if(category){
-                store.getItemsByCategory(category)
-                .then(items => res.render('items', {items: items}))
-                .catch(err => res.render('items', { message: err }));
-            }
-            else if (minDate){
-                store.getItemsByMinDate(minDate)
-                .then(items => res.render('items', {items: items}))
-                .catch(err => res.render('items', { message: err }));
-            }
-            else{
-                store.getAllItems()
-                .then(items => res.render('items', {items: items}))
-                .catch(err => res.render('items', { message: err }));
-            }
-        });
 
-        app.get('/categories', (req, res) => {
-            store.getCategories()
-                .then(categories =>  res.render('categories', {categories: categories}))
-                .catch(err => res.render('categories', { message: err }));
-        });
+  app.get('/items', (req, res) => {
+    let category = req.query.category;
+    let minDate = req.query.minDate;
+    if(category){
+        store.getItemsByCategory(category)
+        .then(items => res.render('items', {items: items}))
+        .catch(err => res.render('items', { message: err }));
+    }
+    else if (minDate){
+        store.getItemsByMinDate(minDate)
+        .then(items => res.render('items', {items: items}))
+        .catch(err => res.render('items', { message: err }));
+    }
+    else{
+        store.getAllItems()
+        .then(items => res.render('items', {items: items}))
+        .catch(err => res.render('items', { message: err }));
+    }
+});
 
-        app.get('/items/add', (req, res) => {
-            res.render('addItem');
-            
-        });
+
+
+app.get('/categories', (req, res) => {
+    store.getCategories()
+        .then(categories =>  res.render('categories', {categories: categories}))
+        .catch(err => res.render('categories', { message: err }));
+});
+
+app.get('/items/add', (req, res) => {
+    res.render('addItem');            
+});
 
     
 
-        app.get('/items/:id',(req,res)=>{
-            let id = req.params.id;
-            store.getItemById(id)
-            .then(items => res.json(items))
-            .catch(err => res.status(404).json({ message: err }));
-        })
+app.get('/items/:id',(req,res)=>{
+    let id = req.params.id;
+    store.getItemById(id)
+    .then(items => res.json(items))
+    .catch(err => res.status(404).json({ message: err }));
+})
 
-        app.get('*', (req, res) => {
-            res.status(404).send('404 Error :(');
-        });
+app.get('*', (req, res) => {
+    res.status(404).send('404 Error :(');
+});
 
         // Starting the server
-        app.listen(PORT, () => {
-            console.log(`Express listening on port ${PORT}`);
-        });
+app.listen(PORT, () => {
+    console.log(`Express listening on port ${PORT}`);});
     })
     .catch(err => {
         console.error(`initialization failed: ${err}`);

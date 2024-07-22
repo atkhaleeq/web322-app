@@ -57,7 +57,7 @@ const getPublishedItems = () => {
 const getPublishedItemsByCategory = (category) => {
     return new Promise((resolve, reject) => {
         const publishedItemsCat = items.filter(item => item.published=== true && item.category === category);
-        if (publishedItemsCat.length === 0) {
+        if (publishedItemsCat.length > 0) {
             reject(`Rejected, items length is zero`);
         } else {
             resolve(publishedItemsCat);
@@ -69,10 +69,10 @@ const getPublishedItemsByCategory = (category) => {
 
 const getCategories = () => {
     return new Promise((resolve, reject) => {
-        if (categories.length === 0) {
-            reject(`categories rejected`);
-        } else {
+        if (categories.length > 0) {
             resolve(categories);
+        } else {
+            reject("Rejected")
         }
     });
 };
@@ -106,15 +106,17 @@ const addItem = (itemData) => {
 };
 
 
-function getItemsByCategory(category) {
+const getItemsByCategory = (category)  =>{
     return new Promise ((resolve, reject)=>{
-         // using built-in function filter and saving the result in arr. we can alternatively use a for loop.
-        let arr = items.filter(itemsCat => itemsCat.category === category);
-        if (arr.length === 0){
-            reject("no results returned");
+        const arr = items.filter(function(item){
+
+            return item.category === parseInt(category);
+        });
+        if (arr.length > 0){
+            resolve(arr);
         }
         else{
-            resolve(arr);
+            reject("nothing returned");
         }
 
     });
@@ -139,10 +141,10 @@ function getItemsByMinDate(minDateStr){
     });
 };
 
-function getItemById(id){
+const getItemById = (id) =>{
     return new Promise((resolve, reject)=>{
         let arr3 = items.filter(obj => obj.id === id);
-        if (arr2.length === 0){
+        if (arr3.length === 0){
             reject("no results returned");
         }
         else{
