@@ -44,11 +44,13 @@ const getAllItems = () => {
 
 const getPublishedItems = () => {
     return new Promise((resolve, reject) => {
-        const publishedItems = items.filter(item => item.published);
-        if (publishedItems.length === 0) {
-            reject(`Rejected, items length is zero`);
-        } else {
+        const publishedItems = items.filter(item => item.published == true);
+        if (publishedItems.length > 0) {
             resolve(publishedItems);
+            
+        } else {
+            reject(`Rejected`);
+          
         }
     });
 };
@@ -56,11 +58,11 @@ const getPublishedItems = () => {
 
 const getPublishedItemsByCategory = (category) => {
     return new Promise((resolve, reject) => {
-        const publishedItemsCat = items.filter(item => item.published=== true && item.category === category);
+        const publishedItemsCat = items.filter(item => item.published== true && item.category === parseInt(category));
         if (publishedItemsCat.length > 0) {
-            reject(`Rejected, items length is zero`);
-        } else {
             resolve(publishedItemsCat);
+        } else {
+            reject("reject");
         }
     });
 };
@@ -143,12 +145,12 @@ function getItemsByMinDate(minDateStr){
 
 const getItemById = (id) =>{
     return new Promise((resolve, reject)=>{
-        let arr3 = items.filter(obj => obj.id === id);
+        let arr3 = items.filter(obj => obj.id === parseInt(id));
         if (arr3.length === 0){
             reject("no results returned");
         }
         else{
-            resolve(arr2);
+            resolve(arr3[0]);
         }
     });  
 };

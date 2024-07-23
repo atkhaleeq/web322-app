@@ -119,7 +119,7 @@ store.initialize()
 
         app.get('/about', (req, res) => {
             res.render('about');
-        });
+});
 
      
 app.get("/shop", async (req, res) => {
@@ -149,7 +149,7 @@ app.get("/shop", async (req, res) => {
       viewData.items = items;
       viewData.item = item;
     } catch (err) {
-      viewData.message = "no results1";
+      viewData.message = "no results432";
     }
   
     try {
@@ -159,7 +159,7 @@ app.get("/shop", async (req, res) => {
       // store the "categories" data in the viewData object (to be passed to the view)
       viewData.categories = categories;
     } catch (err) {
-      viewData.categoriesMessage = "no results1";
+      viewData.categoriesMessage = "no results987";
     }
   
     // render the "shop" view with all of the data (viewData)
@@ -193,14 +193,14 @@ app.get('/shop/:id', async (req, res) => {
         viewData.items = items;
   
     }catch(err){
-        viewData.message = "no results2";
+        viewData.message = "no results222";
     }
   
     try{
         // Obtain the item by "id"
         viewData.item = await itemData.getItemById(req.params.id);
     }catch(err){
-        viewData.message = "no results2"; 
+        viewData.message = "no results333"; 
     }
   
     try{
@@ -210,7 +210,7 @@ app.get('/shop/:id', async (req, res) => {
         // store the "categories" data in the viewData object (to be passed to the view)
         viewData.categories = categories;
     }catch(err){
-        viewData.categoriesMessage = "no results2"
+        viewData.categoriesMessage = "no results444"
     }
   
     // render the "shop" view with all of the data (viewData)
