@@ -280,7 +280,14 @@ app.get('/categories', (req, res) => {
 });
 
 app.get('/items/add', (req, res) => {
-    res.render('addItem');            
+    store.getCategories().then((categories)=>{
+        res.render('addItem', {categories})
+        .catch (()=>{
+            res.render('addItem', {categories: []});
+        })
+
+    })
+           
 });
 
     
@@ -322,6 +329,10 @@ app.get('/categories/delete/:id', (req, res)=>{
 
 app.get('/items/delete/:id', (req, res)=>{
     store.deleteCategoryById(req.params.id).then(()=> res.redirect('/items'));
+})
+
+app.get('/categories/delete/:id', (req, res)=>{
+    store.deleteCategoryById(req.params.id).then(()=> res.redirect('categories'));
 })
 
 
