@@ -34,7 +34,7 @@ cloudinary.config({
 app.engine(".hbs", exphbs.engine({extname: ".hbs"}));
 app.set("view engine", ".hbs");
 
-
+app.use(express.urlencoded({extended: true}));
 
 const upload = multer(); 
 
@@ -224,18 +224,42 @@ app.get('/shop/:id', async (req, res) => {
     let minDate = req.query.minDate;
     if(category){
         store.getItemsByCategory(category)
-        .then(items => res.render('items', {items: items}))
-        .catch(err => res.render('items', { message: err }));
+        .then(items => {
+            if (items.length > 0){
+                res.render('items', {items: items});
+            }
+            else{
+                
+                res.render('items', { message: "No items" });
+            }
+        })
+        .catch(err => res.render('items', { message: "No items" }));
     }
     else if (minDate){
         store.getItemsByMinDate(minDate)
-        .then(items => res.render('items', {items: items}))
-        .catch(err => res.render('items', { message: err }));
+        .then(items => {
+            if (items.length > 0){
+                res.render('items', {items: items});
+            }
+            else{
+                
+                res.render('items', { message: "No items" });
+            }
+        })
+        .catch(err => res.render('items', { message: "No items" }));
     }
     else{
         store.getAllItems()
-        .then(items => res.render('items', {items: items}))
-        .catch(err => res.render('items', { message: err }));
+        .then(items => {
+            if (items.length > 0){
+                res.render('items', {items: items});
+            }
+            else{
+                
+                res.render('items', { message: "No items" });
+            }
+        })
+        .catch(err => res.render('items', { message: "No items" }));
     }
 });
 
@@ -243,8 +267,16 @@ app.get('/shop/:id', async (req, res) => {
 
 app.get('/categories', (req, res) => {
     store.getCategories()
-        .then(categories =>  res.render('categories', {categories: categories}))
-        .catch(err => res.render('categories', { message: err }));
+    .then(categories => {
+        if (categories.length > 0){
+            res.render('categories', {categories: categories});
+        }
+        else{
+            
+            res.render('categories', { message: "No categories" });
+        }
+    })
+    .catch(err => res.render('categories', { message: "No categories" }));
 });
 
 app.get('/items/add', (req, res) => {
@@ -270,4 +302,17 @@ app.listen(PORT, () => {
     })
     .catch(err => {
         console.error(`initialization failed: ${err}`);
-    });
+});
+
+// new routes ****************
+app.get('/categories/add', (req, res)=>{
+    res.render('addCategory');
+})
+
+
+app.post('/categories/add', (req, res)=>{
+    store.addCategory(req.body)
+    .then(() => res.redirect('/categories'))
+});
+   
+   

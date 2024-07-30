@@ -133,6 +133,19 @@ const getItemById = (id) =>{
 };
 
 
+// new functions**********
+const addCategory = (categoryData) => {
+    return new Promise((resolve, reject)=>{
+        for (let i in categoryData){
+            if (categoryData[i]===""){
+                categoryData[i] = null;
+            }
+        }
+        Category.create(categoryData).then(()=> resolve()).catch(error => reject("cant create category"));
+    })
+}
+
+
 module.exports = {
     initialize,
     getAllItems,
@@ -142,6 +155,7 @@ module.exports = {
     getItemsByCategory,
     getItemsByMinDate,
     getItemById,
-    getPublishedItemsByCategory
+    getPublishedItemsByCategory,
+    addCategory
 
 };
