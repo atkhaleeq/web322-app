@@ -1,6 +1,6 @@
 	const Sequelize = require('sequelize');
-	var sequelize = new Sequelize('database', 'user', 'password', {
-    host: 'host',
+	var sequelize = new Sequelize('SenecaDB', 'SenecaDB_owner', 'UedvM9Fln3RQ', {
+    host: 'ep-autumn-darkness-a5ztetgv.us-east-2.aws.neon.tech',
     dialect: 'postgres',
     port: 5432,
     dialectOptions: {
@@ -8,6 +8,12 @@
     },
     query: { raw: true }
 });
+
+
+
+
+
+
 
 const Item = sequelize.define('Item',{
     body: Sequelize.TEXT,
