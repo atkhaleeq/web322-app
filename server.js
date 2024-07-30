@@ -282,11 +282,12 @@ app.get('/categories', (req, res) => {
 app.get('/items/add', (req, res) => {
     store.getCategories().then((categories)=>{
         res.render('addItem', {categories})
-        .catch (()=>{
-            res.render('addItem', {categories: []});
-        })
-
+        
     })
+    .catch (()=>{
+        res.render('addItem', {categories: []});
+    })
+
            
 });
 

@@ -141,9 +141,12 @@ const addCategory = (categoryData) => {
                 categoryData[i] = null;
             }
         }
-        Category.create(categoryData).then(()=> resolve()).catch(error => reject("cant create category"));
+        Category.create(categoryData).then((categoryData)=> resolve(categoryData))
+        .catch(error => reject("cant create category"));
     })
 }
+
+
 
 const deleteCategoryById = (id) => {
     return new Promise((resolve, reject)=>{
