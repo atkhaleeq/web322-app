@@ -20,6 +20,7 @@ const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
 const exphbs = require('express-handlebars');
 const itemData = require("./store-service");
+const pg = require('pg');
 const PORT = process.env.PORT || 8080;
 
 cloudinary.config({
