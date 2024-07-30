@@ -145,6 +145,19 @@ const addCategory = (categoryData) => {
     })
 }
 
+const deleteCategoryById = (id) => {
+    return new Promise((resolve, reject)=>{
+        Category.destroy({where: {id: id}}).then(()=>resolve()).catch(error => reject ("cant remove category"));
+    })
+}
+
+const deleteItemById = (id) => {
+    return new Promise((resolve, reject)=>{
+        Item.destroy({where: {id: id}}).then(()=>resolve()).catch(error => reject ("cant remove Item"));
+
+    })
+}
+
 
 module.exports = {
     initialize,
@@ -156,6 +169,8 @@ module.exports = {
     getItemsByMinDate,
     getItemById,
     getPublishedItemsByCategory,
-    addCategory
+    addCategory,
+    deleteCategoryById,
+    deleteItemById
 
 };
