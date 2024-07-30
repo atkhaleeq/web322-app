@@ -28,26 +28,42 @@ Item.belongsTo(Category, {foreignKey: 'category'});
 
 const initialize = () => {
     return new Promise((resolve, reject) => {
-      reject();
+
+        sequelize.sync()
+        .then(()=> resolve())
+        .catch(error => reject ("unable to sync the database"));
     });
 };
-
+ 
 const getAllItems = () => {
     return new Promise((resolve, reject) => {
-        reject();
+        Item.findAll().then(data => resolve(data)).catch (error => reject ("no results returned"));
     });
 };
 
 const getPublishedItems = () => {
     return new Promise((resolve, reject) => {
-        reject();
+        Item.findAll({
+            where: {published: true}
+
+        })
+        .then(data => resolve(data))
+        .catch (error => reject ("no results returned"));
+      
     });
 };
 
 
 const getPublishedItemsByCategory = (category) => {
     return new Promise((resolve, reject) => {
-        reject();
+        Item.findAll({
+            where: {published: true, category: category}
+
+        })
+        .then(data => resolve(data))
+        .catch (error => reject ("no results returned"));
+      
+        
     });
 };
 
@@ -55,42 +71,58 @@ const getPublishedItemsByCategory = (category) => {
 
 const getCategories = () => {
     return new Promise((resolve, reject) => {
-        reject();
+        Category.findAll()
+        .then(data => resolve(data))
+        .catch (error => reject ("no results returned"));
     });
 };
 
 const addItem = (itemData) => {
     return new Promise((resolve) => {
-        reject();
+        itemData.published = (itemData.published) ? true : false;
+        for(let i in itemData){
+            if(itemData[i]===""){
+                itemData[i]=null;
+            }
+        }
+        itemData.itemData = new Date();
+
+        Item.create(itemData)
+        .then(data => resolve(data))
+       .catch (error => reject ("unable to create item"));
     });
 };
 
 
 const getItemsByCategory = (category)  =>{
     return new Promise ((resolve, reject)=>{
-        const arr = items.filter(function(item){
-
-            return item.category === parseInt(category);
-        });
-        if (arr.length > 0){
-            resolve(arr);
-        }
-        else{
-            reject("nothing returned");
-        }
-
+       Item.findAll({where: {category: category}})
+       .then(data => resolve(data))
+       .catch (error => reject ("no results returned"));
     });
 };
 
 function getItemsByMinDate(minDateStr){
+    const { gte } = Sequelize.Op;
     return new Promise ((resolve, reject)=>{
-        reject();
+        Item.findAll({
+            where: {
+                itemDate: {
+                    [gte]: new Date(minDateStr)
+                }
+            }
+        })
+        .then(data => resolve(data))
+       .catch (error => reject ("no results returned"));
+
     });
 };
 
 const getItemById = (id) =>{
     return new Promise((resolve, reject)=>{
-        reject();
+        Item.findAll({where: {id: id}})
+        .then(data => resolve(data[0]))
+        .catch (error => reject ("no results returned"));
     });  
 };
 
