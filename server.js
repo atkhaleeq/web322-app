@@ -315,4 +315,15 @@ app.post('/categories/add', (req, res)=>{
     .then(() => res.redirect('/categories'))
 });
    
+
+app.get('/categories/delete/:id', (req, res)=>{
+    store.deleteCategoryById(req.params.id).then(()=> res.redirect('/categories'));
+})
+
+app.get('/items/delete/:id', (req, res)=>{
+    store.deleteCategoryById(req.params.id).then(()=> res.redirect('/items'));
+})
+
+
+
    
