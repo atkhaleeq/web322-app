@@ -141,10 +141,11 @@ const addCategory = (categoryData) => {
                 categoryData[i] = null;
             }
         }
-        Category.create(categoryData).then((categoryData)=> resolve(categoryData))
+        Category.create(categoryData)
+        .then(()=> resolve(categoryData))
         .catch(error => reject("cant create category"));
-    })
-}
+    });
+};
 
 
 

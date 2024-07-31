@@ -319,8 +319,11 @@ app.get('/categories/add', (req, res)=>{
 
 
 app.post('/categories/add', (req, res)=>{
-    store.addCategory(req.body)
-    .then(() => res.redirect('/categories'))
+    const categoryData = req.body;
+    store.addCategory(categoryData)
+    .then(() => res.redirect('/categories')).catch(error =>{
+        res.status(404).send('cant add category')
+    })
 });
    
 
@@ -329,12 +332,10 @@ app.get('/categories/delete/:id', (req, res)=>{
 })
 
 app.get('/items/delete/:id', (req, res)=>{
-    store.deleteCategoryById(req.params.id).then(()=> res.redirect('/items'));
+    store.deleteItemById(req.params.id).then(()=> res.redirect('/items'));
 })
 
-app.get('/categories/delete/:id', (req, res)=>{
-    store.deleteCategoryById(req.params.id).then(()=> res.redirect('categories'));
-})
+
 
 
 
