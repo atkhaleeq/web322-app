@@ -1,5 +1,5 @@
 /*********************************************************************************
-WEB322 – Assignment 04
+WEB322 – Assignment 05
 I declare that this assignment is my own work in accordance with Seneca Academic Policy.  
 No part of this assignment has been copied manually or electronically from any other source (including 3rd party web sites) or distributed to other students.
 
@@ -313,9 +313,15 @@ app.listen(PORT, () => {
 });
 
 // new routes ****************
-app.get('/categories/add', (req, res)=>{
-    res.render('addCategory');
-})
+app.get('/categories/add', (req, res) => {
+    store.getCategories().then((categories) => {
+        res.render('addCategory', { categories });
+    })
+    .catch(() => {
+        res.render('addCategory', { categories: [] });
+    });
+});
+
 
 
 app.post('/categories/add', (req, res)=>{
