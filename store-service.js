@@ -143,7 +143,7 @@ const addCategory = (categoryData) => {
         }
         Category.create(categoryData)
         .then(()=> resolve(categoryData))
-        .catch(error => reject("cant create category"));
+        .catch(error => reject("cant add category"));
     });
 };
 

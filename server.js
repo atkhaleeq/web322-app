@@ -328,7 +328,7 @@ app.post('/categories/add', (req, res)=>{
     const categoryData = req.body;
     store.addCategory(categoryData)
     .then(() => res.redirect('/categories')).catch(error =>{
-        res.status(404).send('cant add category')
+        res.status(404).send('cant Add category')
     })
 });
    
