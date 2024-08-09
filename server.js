@@ -22,6 +22,8 @@ const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
 const exphbs = require('express-handlebars');
 const itemData = require("./store-service");
+const clientSessions = require("client-sessions");
+
 const pg = require('pg');
 const PORT = process.env.PORT || 8080;
 
@@ -62,9 +64,50 @@ app.engine('.hbs', exphbs.engine({extname: '.hbs',
 
 
 
+store.initialize()
+.then(function(){
+    app.listen(HTTP_PORT, function(){
+        console.log("app listening on: " + HTTP_PORT)
+    });
+}).catch(function(err){
+    console.log("unable to start server: " + err);
+});
 
 
-app.post('/items/add', upload.single('featureImage'), function (req, res, next) {
+store.initialize()
+.then(authData.initialize)
+.then(function(){
+    app.listen(HTTP_PORT, function(){
+        console.log("app listening on: " + HTTP_PORT)
+    });
+}).catch(function(err){
+    console.log("unable to start server: " + err);
+});
+
+app.use(
+    clientSessions({
+      cookieName: 'session', // this is the object name that will be added to 'req'
+      secret: 'o6LjQ5EVNC28ZgK64hDELM18ScpFQr', // this should be a long un-guessable string.
+      duration: 2 * 60 * 1000, // duration of the session in milliseconds (2 minutes)
+      activeDuration: 1000 * 60, // the session will be extended by this many ms each request (1 minute)
+    })
+);
+
+app.use(function(req, res, next) {
+    res.locals.session = req.session;
+    next();
+  });
+  
+  function ensureLogin(req, res, next) {
+    if (!req.session.user) {
+      res.redirect('/login');
+    } else {
+      next();
+    }
+  }
+
+
+app.post('/items/add', ensureLogin, upload.single('featureImage'), function (req, res, next) {
     if(req.file){
         let streamUpload = (req) => {
             return new Promise((resolve, reject) => {
@@ -170,7 +213,7 @@ app.get("/shop", async (req, res) => {
   });
 
   
-app.get('/shop/:id', async (req, res) => {
+app.get('/shop/:id', ensureLogin, async (req, res) => {
 
     // Declare an object to store properties for the view
     let viewData = {};
@@ -221,7 +264,7 @@ app.get('/shop/:id', async (req, res) => {
   });
 
 
-  app.get('/items', (req, res) => {
+  app.get('/items',ensureLogin, (req, res) => {
     let category = req.query.category;
     let minDate = req.query.minDate;
     if(category){
@@ -267,7 +310,7 @@ app.get('/shop/:id', async (req, res) => {
 
 
 
-app.get('/categories', (req, res) => {
+app.get('/categories', ensureLogin, (req, res) => {
     store.getCategories()
     .then(categories => {
         if (categories.length > 0){
@@ -281,7 +324,7 @@ app.get('/categories', (req, res) => {
     .catch(err => res.render('categories', { message: "No categories" }));
 });
 
-app.get('/items/add', (req, res) => {
+app.get('/items/add', ensureLogin, (req, res) => {
     store.getCategories().then((categories)=>{
         res.render('addItem', {categories})
         
@@ -295,7 +338,7 @@ app.get('/items/add', (req, res) => {
 
     
 
-app.get('/items/:id',(req,res)=>{
+app.get('/items/:id',ensureLogin,(req,res)=>{
     let id = req.params.id;
     store.getItemById(id)
     .then(items => res.json(items))
@@ -315,7 +358,7 @@ app.listen(PORT, () => {
 });
 
 // new routes ****************
-app.get('/categories/add', (req, res) => {
+app.get('/categories/add', ensureLogin,(req, res) => {
     store.getCategories().then((categories) => {
         res.render('addCategory', { categories });
     })
@@ -326,7 +369,7 @@ app.get('/categories/add', (req, res) => {
 
 
 
-app.post('/categories/add', (req, res)=>{
+app.post('/categories/add', ensureLogin,(req, res)=>{
     const categoryData = req.body;
     store.addCategory(categoryData)
     .then(() => res.redirect('/categories')).catch(error =>{
@@ -335,13 +378,15 @@ app.post('/categories/add', (req, res)=>{
 });
    
 
-app.get('/categories/delete/:id', (req, res)=>{
+app.get('/categories/delete/:id', ensureLogin,(req, res)=>{
     store.deleteCategoryById(req.params.id).then(()=> res.redirect('/categories'));
 })
 
-app.get('/items/delete/:id', (req, res)=>{
+app.get('/items/delete/:id', ensureLogin,(req, res)=>{
     store.deleteItemById(req.params.id).then(()=> res.redirect('/items'));
 })
+
+// AS6 routes***************
 
 
 
