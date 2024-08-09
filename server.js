@@ -14,6 +14,8 @@ GitHub Repository URL:  atkhaleeq/web322-app
 const express = require('express');
 const path = require('path');
 const store = require('./store-service');
+const authData = require('./auth-service.js');
+
 const app = express();
 const multer = require("multer");
 const cloudinary = require('cloudinary').v2
