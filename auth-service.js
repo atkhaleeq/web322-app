@@ -53,30 +53,30 @@ module.exports.registerUser = function (userData) {
 
 module.exports.checkUser = function (userData) {
   return new Promise(function (resolve, reject) {
-    User.find({ userName: userData.userName })
+    User.findOne({ userName: userData.userName })
       .exec()
-      .then((users) => {
-        if (users.length === 0) {
+      .then((user) => {
+        if (!user) {
           reject("Unable to find user: " + userData.userName);
-        } else if (users[0].password !== userData.password) {
+        } else if (user.password !== userData.password) {
           reject("Incorrect Password for user: " + userData.userName);
         } else {
-          users[0].loginHistory.push({
+          user.loginHistory.push({
             dateTime: new Date().toString(),
             userAgent: userData.userAgent,
           });
 
           User.updateOne(
-            { userName: users[0].username },
-            { $set: { loginHistory: users[0].loginHistory } }
-              .exec()
-              .then(() => {
-                resolve(users[0]);
-              })
-              .catch((err) => {
-                reject("There was an error verifying the user: " + err);
-              })
-          );
+            { userName: user.userName },
+            { $set: { loginHistory: user.loginHistory } }
+          )
+            .exec()
+            .then(() => {
+              resolve(user);
+            })
+            .catch((err) => {
+              reject("There was an error verifying the user: " + err);
+            });
         }
       })
       .catch(() => {

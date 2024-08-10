@@ -26,6 +26,7 @@ const clientSessions = require("client-sessions");
 
 const pg = require("pg");
 const PORT = process.env.PORT || 8080;
+const HTTP_PORT = process.env.HTTP_PORT || 9090;
 
 cloudinary.config({
   cloud_name: "dnt5znj9m",
@@ -73,17 +74,6 @@ app.engine(
     },
   })
 );
-
-store
-  .initialize()
-  .then(function () {
-    app.listen(HTTP_PORT, function () {
-      console.log("app listening on: " + HTTP_PORT);
-    });
-  })
-  .catch(function (err) {
-    console.log("unable to start server: " + err);
-  });
 
 store
   .initialize()
@@ -438,5 +428,6 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/userHistory", ensureLogin, (req, res) => {
+  console.log(req.session.user);
   res.render("userHistory");
 });
