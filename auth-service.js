@@ -1,3 +1,4 @@
+const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
@@ -34,6 +35,9 @@ module.exports.registerUser = function (userData) {
     if (userData.password !== userData.password2) {
       reject("Password do not match");
     } else {
+      bcrypt.hash("myPassword123", 10).then((hash) => {
+        userData.password = hash;
+      });
       let newUser = new User(userData);
       newUser
         .save()
@@ -44,7 +48,7 @@ module.exports.registerUser = function (userData) {
           if (err.code === 11000) {
             reject("User Name already taken");
           } else if (err.code !== 11000) {
-            reject("There was an error creating the user: " + err);
+            reject("There was an error encrypting the password" + err);
           }
         });
     }
@@ -61,9 +65,15 @@ module.exports.checkUser = function (userData) {
         } else if (user.password !== userData.password) {
           reject("Incorrect Password for user: " + userData.userName);
         } else {
-          user.loginHistory.push({
-            dateTime: new Date().toString(),
-            userAgent: userData.userAgent,
+          bcrypt.compare("myPassword123", hash).then((result) => {
+            if (result === false) {
+              reject("Incorrect Password for " + userData.userName);
+            } else {
+              user.loginHistory.push({
+                dateTime: new Date().toString(),
+                userAgent: userData.userAgent,
+              });
+            }
           });
 
           User.updateOne(
